@@ -29,7 +29,7 @@ which with the new syntax would be
 ```python
 range([start,] stop, [step,] /)
 ```
-Note that this syntax is ambiguous, so the left-most optional parameter would be preferred.
+Note that this syntax is ambiguous, so the leftmost optional parameter would be preferred.
 
 ## Motivation (copy-pase)
 > * Documentation can clearly, unambiguously, and consistently express exactly how the arguments for a function will be interpreted.
@@ -51,7 +51,7 @@ def name(positional_only_parameters, /, positional_or_keyword_parameters,
 
 New, optional parameters grouped with `[]`
 ```python
-def addch([y, x,] ch, [attr,] /):
+def foo([a, b,] c, [d,] /):
 ```
 
 Example:
@@ -63,3 +63,5 @@ instead of (as in current documentation)
 addch(ch[, attr])
 addch(y, x, ch[, attr])
 ```
+
+Note that the right optional argument group is chosen if 2 arguments are given; the groups are determined by the number of arguments and in case of ambiguity the leftmost argument is used.
