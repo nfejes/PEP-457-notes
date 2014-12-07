@@ -49,11 +49,16 @@ def name(positional_only_parameters, /, positional_or_keyword_parameters,
          *, keyword_only_parameters):
 ```
 
-New, with optional parameters
+New, optional parameters grouped with `[]`
 ```python
 def addch([y, x,] ch, [attr,] /):
 ```
-instead of
+
+Example:
+```python
+def addch([y, x,] ch, [attr,] /):
+```
+instead of (as in current documentation)
 ```python
 addch(ch[, attr])
 addch(y, x, ch[, attr])
