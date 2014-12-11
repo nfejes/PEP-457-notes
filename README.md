@@ -3,8 +3,7 @@ PEP 457 - Syntax For Positional-Only Parameters
 
 ## Introduction
 This PEP (Python Enhancement Proposal) proposes a change in how the syntax for parameter passing is
-defined, in a way such that documentation can be expressed more consistently, and such that
-the language allows positional-only parameters.
+defined in Python, in a way such that documentation can be expressed more consistently with the actual implementation, and such that the language allows positional-only parameters without hard-to-read implementations.
 
 One of the important ideas of the proposal is that:
 > currently in the documentation there's no way to tell whether a function takes positional-only parameters. 
@@ -19,6 +18,9 @@ Note that while it is possible to simulate positional-only parameters, one has t
 
 ## Motivation
 In Python there are different semantics for function parameters declaration. Sometimes this can be confusing for the programmer, for example:
+
+## Example
+One of the examples in the proposal is the function
 
 the `range()` function is documented with the signatures
 ```python
