@@ -20,7 +20,44 @@ Note that while it is possible to simulate positional-only parameters, one has t
 In Python there are different semantics for function parameters declaration. Sometimes this can be confusing for the programmer, for example:
 
 ## Example
-One of the examples in the proposal is the function
+One of the examples in the proposal is the function:
+```python
+range(stop)
+range(start, stop[, step])
+```
+
+Let us say that you want to implement your own version of `range()`, how would you do that?
+
+The two ways to do this would be:
+```python
+def myrange1(a,b=None,c=None):
+    if b is None:
+         return range(a)
+    if c is None:
+         return range(a,b)
+    else:
+         return range(a,b,c)
+
+def myrange2(*args):
+   # count and parse args
+```
+
+However, both of these has the disadvantage that you can not simply look at the definition and say what the arguments are, especially for the `myrange2()` implementation.
+
+With the new syntax, this would be:
+
+```python
+def myrange3([start,] stop, [step,] /):
+    if start is undefined:
+         return range(start)
+    if step is undefined:
+         return range(start,stop)
+    else:
+         return range(start,stop,step)
+
+```
+
+which is much more readable than the other examples. 
 
 the `range()` function is documented with the signatures
 ```python
