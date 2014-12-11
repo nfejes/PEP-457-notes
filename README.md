@@ -19,10 +19,27 @@ Note that while it is possible to simulate positional-only parameters, one has t
 * Larry Hastings <larry at hastings.org>
 * Status: draft
 
-The original PEP was proposed at October 8 2013 by Larry Hasting and has been... 
+The original PEP was proposed at October 8, 2013 by Larry Hasting, but is grounded in earlier ideas by GvR (Guido van Rossum) himself. While 457 is the first actual PEP to be based on the idea of positional-only arguments, in early 2012, Guido van Rossum wrote:
 
-**more on background, introduction, previous PEPs?**
+_I would actually like to see a syntactic feature to state that an
+argument *cannot* be given as a keyword argument (just as we already
+added syntax to state that it *must* be a keyword)._
 
+This "syntactic feature" would evolve into the now-proposed "/" operand, also originally suggested by van Rossum [3] ; it circulated in the Python-ideas mailing list for a relatively brief time (most of 2012, as opposed to the almost decades-long germinating times of other PEPs) before officially being proposed by Mr. Hastings. As discussed below, a major point of contention was whether or not the slash-operator would be applied as a parameter operand, e.g.:
+
+```python
+def somefunc(pos_only,/,p_or_k): 
+...
+```
+
+Or as a sigil:
+
+```python
+def somefunc(/pos_only, p_or_k):
+...
+```
+
+While the latter was originally favored by many aside from van Rossum himself, on the basis of reducing the "noise" in declarations, the former syntax prevailed - due to the fact that, by the nature of positional args, any argument placed before the last positional-only argument would _need_ to itself be positional, meaning only a single delineating symbol was needed.
 
 ## Motivation
 In Python there are different semantics for function parameters declaration. This can be confusing for the programmer, especially when the documentation specifies two or more different versions of the same function that takes different numbers of arguments. This can be confusing because the actual implementation must be made as one single function, so if the programmer looks at the source code for the function, the parameters will most likely not match the ones in the documentation.
@@ -84,10 +101,17 @@ To cite the PEP,
 *  _If there are arguments after the `/` , then you must specify a comma after the `/` , just as there is a comma after the `*` denoting the shift to keyword-only parameters._
 *  _This syntax has no effect on `*args` or `**kwargs` ._
 
-**discussion on this...**
+The process by which python determines which positional arguments are to be assigned in a given method call can be viewed fairly intuitively as "filling up" the parametersa available from left to right. Consider this example:
+
+```python
+def ex_func([a, b,] c, [d,] [e,] /):
+   print("["+str(a)+"], ["+str(b)+"], ["+str(c)+"], ["+str(d)+"], ["+str(e)+"]")
+```
+
+ex\_func can be passed anywhere between 1 and 5 arguments. If passed 0, the non-optional positional-only argument, c, has not been passed, and an exception is thrown, and if 1 argument is passed, then that argument alone is filled. With 2 arguments, the first "paired" couple of optional arguments is skipped, as at least two optional arguments (in addition to the required one) are required to "enter" those square brackets. So, it skips to d, filling it, leaving us with a, b, and e undefined. With 3 arguments, we have enough to fill a and b, so d and e are left unfilled. With 4, we have enough to fill everything except e (we fill c, then a and b, then d), and, predictably, with 5 arguments, all 5 parameters are defined.
 
 ## Alternative notations
-Prior to this PEP, several other semantics for positional only parameters has been proposed. Two examples that are discussed by Guido van Rossum in [3] is
+As we discussed above, prior to this PEP, several other semantics for positional only parameters has been proposed. Two examples that are discussed by Guido van Rossum in [3] is
 ```python
 def spam(~x, ~y, ~z, ~a=2/3):
    ...
@@ -111,7 +135,7 @@ def bar([[[a,] b,] c,] e, /)
 ```
 On the other hand, with the current documentation syntax this function would have four different definitions, which might be worse than the above.
 
-**other problems**
+All this being said, it should be noted that PEP457 does not _invalidate_ any existing Python syntax; thus, while some (indeed, quite a lot) unintuitiveness could result from changing core function signatures, independent developers should not have any of their own code broken (directly) by this update. In many ways, taking advantage of this new syntax is a challenge similar to integrating the disparate worlds of Python2 and Python3.
 
 # References
 1.  [PEP 457](https://www.python.org/dev/peps/pep-0457)
