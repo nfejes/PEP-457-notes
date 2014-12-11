@@ -54,32 +54,28 @@ def addch([y, x,] ch, [attr,] /):
 As opposed to the `range()` function, this parameterization is not ambiguous, but it shows one of the biggest advantages of this syntax. The right optional argument group is chosen if 2 arguments are given; the groups are determined by the number of arguments and in case of ambiguity the leftmost argument is used.
 
 
-
-## Proposed syntax
-Current
+## Positional only parameters
+Currently the way parameter passing works (not including the `*args` and `**kwargs` syntax), the way keyword-mode is specified is:
 ```python
 def name(positional_or_keyword_parameters, *, keyword_only_parameters):
 ```
-
-New
+This allows the user to specify all parameters as keywords, which might not always be optimal. In PEP 457 this issue is addressed by adding the `/` parameter separator, where the preceding parameter are positional only and can not be keyworded. The new syntax would be as follows.
 ```python
 def name(positional_only_parameters, /, positional_or_keyword_parameters,
          *, keyword_only_parameters):
 ```
 
-New, optional parameters grouped with `[]`
+There are a few cases when positional only parameters are needed not only to ensure that the user puts the parameters in the order specified in the function definition. Most importantly, the optional parameter syntax requires the the parameters can not be keyworded. As an example, how would the code below be interpreted?
 ```python
-def foo([a, b,] c, [d,] /):
+def foo([a, b,] c, [d,]):
+    ...
+foo(1,2,3,b=4)
 ```
 
-Example:
-```python
-def addch([y, x,] ch, [attr,] /):
-```
-instead of (as in current documentation)
-```python
-addch(ch[, attr])
-addch(y, x, ch[, attr])
-```
-
-Note that the right optional argument group is chosen if 2 arguments are given; the groups are determined by the number of arguments and in case of ambiguity the leftmost argument is used.
+# References
+1.  [PEP 457](https://www.python.org/dev/peps/pep-0457)
+2.  [Python-ideas: keyword arguments everywhere (stdlib) - issue8706 (Guido van Rossum) ](https://mail.python.org/pipermail/python-ideas/2012-March/014364.html)
+3.  [Python-ideas: keyword arguments everywhere (stdlib) - issue8706 (Guido van Rossum) ](https://mail.python.org/pipermail/python-ideas/2012-March/014378.html)
+4.  [Python-ideas: keyword arguments everywhere (stdlib) - issue8706 (Guido van Rossum) ](https://mail.python.org/pipermail/python-ideas/2012-March/014417.html)
+5.  [Python 2 documentation](https://docs.python.org/2/)
+5.  [Python 3 documentation](https://docs.python.org/3/)
