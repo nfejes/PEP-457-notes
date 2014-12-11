@@ -72,6 +72,31 @@ def foo([a, b,] c, [d,]):
 foo(1,2,3,b=4)
 ```
 
+## Advanced semantics
+To cite the PEP,
+> * Although positional-only parameter technically have names, these names are internal-only; positional-only parameters are never externally addressable by name. (Similarly to `*args` and `**kwargs` .)
+* It's possible to nest option groups.
+* If there are no required parameters, all option groups behave as if they're to the right of the required parameter group.
+* For clarity and consistency, the comma for a parameter always comes immediately after the parameter name. It's a syntax error to specify a square bracket between the name of a parameter and the following comma. (This is far more readable than putting the comma outside the square bracket, particularly for nested groups.)
+* If there are arguments after the `/` , then you must specify a comma after the `/` , just as there is a comma after the `*` denoting the shift to keyword-only parameters.
+This syntax has no effect on `*args` or `**kwargs` .
+
+**discussion on this...**
+
+## Problems with the proposal
+With the new syntax, it would be possible to create very complex function parameter declarations, especially if nested optional groups are used. This might be a disadvantage since it might actually be harder to read such declarations compared to using multiple function definitions in the documentation.
+
+
+## Alternative notations
+Prior to this PEP, several other semantics for positional only parameters has been proposed. Two examples that are discussed by Guido van Rossum in [3] is
+```python
+def spam(~x, ~y, ~z, ~a=2/3):
+   ...
+def spam(/x, /y, /z, /a=2/3):
+   ...
+```
+where each positional only parameter is preceded by either `~` or `/`. However this syntax was rejected since it clutters the defintion more than necessary. Something that is noted in the discussion in [3] is that if parameter `c` in `def foo(a,b,c,d)` is positional only, then `a` and `b` must also be positional only to. Thus it is not necessary to specify that each parameter is positional only, but we can group them together with the PEP 457 `/` syntax.
+
 # References
 1.  [PEP 457](https://www.python.org/dev/peps/pep-0457)
 2.  [Python-ideas: keyword arguments everywhere (stdlib) - issue8706 (Guido van Rossum) ](https://mail.python.org/pipermail/python-ideas/2012-March/014364.html)
