@@ -26,9 +26,9 @@ The original PEP was proposed at October 8 2013 by Larry Hasting and has been
 In Python there are different semantics for function parameters declaration. This can be confusing for the programmer, especially when the documentation specifies two or more different versions of the same function that takes different numbers of arguments. This can be confusing because the actual implementation must be made as one single function, so if the programmer looks at the source code for the function, the parameters will most likely not match the ones in the documentation.
 
 To cite the PEP,
-> * Documentation can clearly, unambiguously, and consistently express exactly how the arguments for a function will be interpreted.
-* The syntax is reserved for future use, in case the community decides someday to add positional-only parameters to the language.
-* Argument Clinic can use a variant of the syntax as part of its input when defining the arguments for built-in functions.
+* _Documentation can clearly, unambiguously, and consistently express exactly how the arguments for a function will be interpreted._
+* _The syntax is reserved for future use, in case the community decides someday to add positional-only parameters to the language._
+* _Argument Clinic can use a variant of the syntax as part of its input when defining the arguments for built-in functions._
 
 
 As an example, the `range()` function is documented with the signatures
@@ -74,12 +74,12 @@ foo(1,2,3,b=4)
 
 ## Advanced semantics
 To cite the PEP,
-> * Although positional-only parameter technically have names, these names are internal-only; positional-only parameters are never externally addressable by name. (Similarly to `*args` and `**kwargs` .)
-* It's possible to nest option groups.
-* If there are no required parameters, all option groups behave as if they're to the right of the required parameter group.
-* For clarity and consistency, the comma for a parameter always comes immediately after the parameter name. It's a syntax error to specify a square bracket between the name of a parameter and the following comma. (This is far more readable than putting the comma outside the square bracket, particularly for nested groups.)
-* If there are arguments after the `/` , then you must specify a comma after the `/` , just as there is a comma after the `*` denoting the shift to keyword-only parameters.
-This syntax has no effect on `*args` or `**kwargs` .
+* _Although positional-only parameter technically have names, these names are internal-only; positional-only parameters are never externally addressable by name. (Similarly to `*args` and `**kwargs` .)_
+* _It's possible to nest option groups._
+* _If there are no required parameters, all option groups behave as if they're to the right of the required parameter group._
+* _For clarity and consistency, the comma for a parameter always comes immediately after the parameter name. It's a syntax error to specify a square bracket between the name of a parameter and the following comma. (This is far more readable than putting the comma outside the square bracket, particularly for nested groups.)_
+* _If there are arguments after the `/` , then you must specify a comma after the `/` , just as there is a comma after the `*` denoting the shift to keyword-only parameters._
+* _This syntax has no effect on `*args` or `**kwargs` ._
 
 **discussion on this...**
 
@@ -96,6 +96,18 @@ def spam(/x, /y, /z, /a=2/3):
    ...
 ```
 where each positional only parameter is preceded by either `~` or `/`. However this syntax was rejected since it clutters the defintion more than necessary. Something that is noted in the discussion in [3] is that if parameter `c` in `def foo(a,b,c,d)` is positional only, then `a` and `b` must also be positional only to. Thus it is not necessary to specify that each parameter is positional only, but we can group them together with the PEP 457 `/` syntax.
+
+For example, say that you have a function `bar(a,b,c,d)`, where you want to be able to call
+* `bar(a,b,c,d)`
+* `bar(b,c,d)`
+* `bar(c,d)`
+* `bar(d)`
+
+The syntax for this definition would be complicated with nested optional groups, and could cause more issues than it solves.
+```python
+def bar([[[a,] b,] c,] e, /)
+```
+
 
 # References
 1.  [PEP 457](https://www.python.org/dev/peps/pep-0457)
