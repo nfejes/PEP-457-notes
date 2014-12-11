@@ -1,8 +1,6 @@
-PEP 457: Syntax For Positional-Only Parameters
-===============
-
-### by Zachary Doyle, Niklas Fejes, Samuel Carnes
-### December 8th, 2014
+% PEP 457: Syntax For Positional-Only Parameters
+% by Zachary Doyle, Niklas Fejes, Samuel Carnes
+% December 8th, 2014
 
 ## Introduction
 This PEP (Python Enhancement Proposal) proposes a change in how the syntax for parameter passing is
@@ -21,7 +19,10 @@ Note that while it is possible to simulate positional-only parameters, one has t
 * Larry Hastings <larry at hastings.org>
 * Status: draft
 
-The original PEP was proposed at October 8 2013 by Larry Hasting and has been 
+The original PEP was proposed at October 8 2013 by Larry Hasting and has been... 
+
+**more on background, introduction, previous PEPs?**
+
 
 ## Motivation
 In Python there are different semantics for function parameters declaration. This can be confusing for the programmer, especially when the documentation specifies two or more different versions of the same function that takes different numbers of arguments. This can be confusing because the actual implementation must be made as one single function, so if the programmer looks at the source code for the function, the parameters will most likely not match the ones in the documentation.
@@ -31,7 +32,6 @@ To cite the PEP,
 * _Documentation can clearly, unambiguously, and consistently express exactly how the arguments for a function will be interpreted._
 * _The syntax is reserved for future use, in case the community decides someday to add positional-only parameters to the language._
 * _Argument Clinic can use a variant of the syntax as part of its input when defining the arguments for built-in functions._
-
 
 As an example, the `range()` function is documented with the signatures
 ```python
